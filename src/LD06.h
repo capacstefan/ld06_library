@@ -3,16 +3,15 @@
 
 #include <Arduino.h>
 #include <HardwareSerial.h>
-#include <array>
 #include <vector>
 
-#define POINTS_PER_FRAME 12
-#define FRAME_HEADER 0x54
-#define FRAME_SIZE 47
+#define POINTS_PER_FRAME 12                                                                       // Each lidar frame has 12 frames
+#define FRAME_HEADER 0x54                                                                         // Each frame's first byte is 0x54
+#define FRAME_SIZE 47                                                                             // Each frame has 47 bytes long
 
 
-typedef struct __attribute__((packed)) {
-  uint8_t header;
+typedef struct __attribute__((packed)) {                                                          // Frame structure according to datasheet
+  uint8_t header;                                                                                 // Using uint8_t because we are memory and cpu bounded
   uint8_t data_length;
   uint16_t speed;
   uint16_t start_angle;
@@ -27,27 +26,26 @@ typedef struct __attribute__((packed)) {
 
 
 
-class LD06{
+class LD06{                                                                                        // LD06 will be the class of the lidar
   public:
-    //Inainte trb creat HardwareSerial serialPort(2) si pus in functie ca argument
-    LD06(HardwareSerial& serialPort, int RX);
-    LD06(HardwareSerial& serialPort, int RX, int PWM);
-    void setup();
-    bool duty(int value);
-    std::vector<std::vector<uint8_t>> getMap(int RANGE, int MAP_SIZE);
-    std::vector<std::vector<uint8_t>> getMap(int RANGE, int MAP_SIZE, float START_ANGLE, float END_ANGLE);
-    //int getDist(int START_ANGLE, int END_ANGLE, std::vector<std::vector<uint8_t>> map, int RANGE);
 
-
+    LD06(HardwareSerial& serialPort, int RX);                                                      // Constuctor
+    LD06(HardwareSerial& serialPort, int RX, int PWM);                                             // Overloaded Constructor
+    void setup();                                                                                  // Setup function to be called in void setup()
+    bool duty(int value);                                                                          // Setting motor speed
+    std::vector<std::vector<uint8_t>> getMap(int RANGE, int MAP_SIZE);                             // Mapping the points read
+    std::vector<std::vector<uint8_t>> getMap(int RANGE, int MAP_SIZE, float START_ANGLE, float END_ANGLE); // -//- in a certain angle
+    // To be continued ...
 
   private:
+
     //Variables
-    HardwareSerial* serialPort;
-    int RX;
-    int PWM;
+    HardwareSerial* serialPort;                                                                    // Serial port to communicate
+    int RX;                                                                                        // Serial Receive Pin
+    int PWM;                                                                                       // Duty control Pin
     //Methods
-    uint16_t L2Bendian(uint8_t lsb, uint8_t msb);
-    int toIndex(float coordonate, float RANGE, int MAP_SIZE);
+    uint16_t L2Bendian(uint8_t lsb, uint8_t msb);                                                  // Converting from Little to Big Endian ( 00000001111111 -> 111111110000000)
+    int toIndex(float coordonate, float RANGE, int MAP_SIZE);                                      // Converting from plan coordonate to grid coordonate
 };
 
 #endif //LD06_H
