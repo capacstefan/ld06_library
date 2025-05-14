@@ -43,9 +43,11 @@ class LD06{                                                                     
     HardwareSerial* serialPort;                                                                    // Serial port to communicate
     int RX;                                                                                        // Serial Receive Pin
     int PWM;                                                                                       // Duty control Pin
+    static const uint8_t CrcTable[256];
     //Methods
     uint16_t L2Bendian(uint8_t lsb, uint8_t msb);                                                  // Converting from Little to Big Endian ( 00000001111111 -> 111111110000000)
     int toIndex(float coordonate, float RANGE, int MAP_SIZE);                                      // Converting from plan coordonate to grid coordonate
+    uint8_t CalCRC(uint8_t* FRAME_START, uint8_t LENGTH);
 };
 
 #endif //LD06_H
