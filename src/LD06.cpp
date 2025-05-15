@@ -184,6 +184,11 @@ std::vector<std::vector<uint8_t>> LD06::getMap(int RANGE, int MAP_SIZE, float ST
     return map;
 }
 
+std::vector<Point> LD06::getPoints(int RANGE, int MAP_SIZE){										// Obtaining a vector of Points (faster and smaller than an 2d Vector)
+  // TO BE IMPLEMENTED
+	return NULL;
+}
+
 
 
 
