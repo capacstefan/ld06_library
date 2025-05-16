@@ -43,10 +43,10 @@ class LD06{                                                                     
     LD06(HardwareSerial& serialPort, int RX, int PWM);                                             // Overloaded Constructor
     void setup();                                                                                  // Setup function to be called in void setup()
     bool duty(int value);                                                                          // Setting motor speed
-    std::vector<std::vector<uint8_t>> getMap(int RANGE, int MAP_SIZE);                             // Mapping the points read
-    std::vector<std::vector<uint8_t>> getMap(int RANGE, int MAP_SIZE, float START_ANGLE, float END_ANGLE); // -//- in a certain angle
-  	std::vector<IndexedPoint> getIndexedPoints(int RANGE, int MAP_SIZE);
-    std::vector<RawPoint> getRawPoints(int RANGE);
+    std::vector<std::vector<uint8_t>> getMap(int RANGE, int MAP_SIZE);                             // Building a grid using the points read
+    std::vector<std::vector<uint8_t>> getMap(int RANGE, int MAP_SIZE, float START_ANGLE, float END_ANGLE); // Building a grid using the points read between certain degrees
+  	std::vector<IndexedPoint> getIndexedPoints(int RANGE, int MAP_SIZE);						   // Returning a vector with the points read, indexed for a certain grid size (FASTER THAN WHOLE GRID METHOD)
+    std::vector<RawPoint> getRawPoints(int RANGE);												   // Returning a vector with the points read, along with their raw data (angle, distance)
     // To be continued ...
 
   private:

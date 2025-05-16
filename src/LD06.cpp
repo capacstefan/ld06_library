@@ -64,9 +64,9 @@ uint16_t LD06::L2Bendian(uint8_t lsb, uint8_t msb){
   return (msb << 8) | lsb; 																					// Converting from Little to Big Endian ( 0000000011111111 -> 1111111100000000)
 }
 
-int LD06::toIndex(float coordonate, float range, int grid){
-    int map_coordonate = (int)((coordonate + range/2.0) * (grid/range)); 									// Normalizing coordonate and converting to matrix index
-    return constrain(map_coordonate, 0, grid - 1); 															// Returnng the coordoante bounded by the matrix size
+int LD06::toIndex(float COORDONATE, float RANGE, int GRID_SIZE){
+    int map_coordonate = (int)((COORDONATE + RANGE) * (GRID_SIZE / (RANGE*2) )); 							// Normalizing coordonate and converting to matrix index
+    return constrain(map_coordonate, 0, GRID_SIZE - 1); 													// Returnng the coordoante bounded by the matrix size
 }
 
 std::vector<std::vector<uint8_t>> LD06::getMap(int RANGE, int MAP_SIZE){
@@ -184,7 +184,8 @@ std::vector<std::vector<uint8_t>> LD06::getMap(int RANGE, int MAP_SIZE, float ST
     return map;
 }
 
-std::vector<IndexedPoint> LD06::getIndexedPoints(int RANGE, int MAP_SIZE){
+std::vector<IndexedPoint> LD06::getIndexedPoints(int RANGE, int MAP_SIZE){									// Method to get Points along with their coordonates for a choosen grid size
+  																											// along with their distance(mm)
   	int count = 50;
     while(serialPort->available() < FRAME_SIZE * 51)
       delay(100);
@@ -227,7 +228,7 @@ std::vector<IndexedPoint> LD06::getIndexedPoints(int RANGE, int MAP_SIZE){
                       int x_map = LD06::toIndex(x, RANGE, MAP_SIZE);
                       int y_map = LD06::toIndex(y, RANGE, MAP_SIZE);
 
-                      points.push_back({x_map, y_map, frame.point[i].distance});
+                      points.push_back({x_map, y_map, frame.point[i].distance});							// Populating the vector with the IndexedPoint stuctures
                     }
                 }
             }
@@ -242,7 +243,7 @@ std::vector<IndexedPoint> LD06::getIndexedPoints(int RANGE, int MAP_SIZE){
     return points;
 }
 
-std::vector<RawPoint> LD06::getRawPoints(int RANGE){
+std::vector<RawPoint> LD06::getRawPoints(int RANGE){														// Method to get basic data for Points such as angle(degrees) and distance(mm)
   	int count = 50;
     while(serialPort->available() < FRAME_SIZE * 51)
       delay(100);
@@ -278,7 +279,7 @@ std::vector<RawPoint> LD06::getRawPoints(int RANGE){
                 for(int i=0; i < POINTS_PER_FRAME; i++){
                     if(frame.point[i].confidence > 200 && frame.point[i].distance <= RANGE/2){
                       float angle = startangle + step * i;
-                      points.push_back({angle, frame.point[i].distance});
+                      points.push_back({angle, frame.point[i].distance});									// Populating the vector with IndexedPoint structures
                     }
                 }
             }
