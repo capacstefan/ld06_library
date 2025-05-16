@@ -9,11 +9,16 @@
 #define FRAME_HEADER 0x54                                                                         // Each frame's first byte is 0x54
 #define FRAME_SIZE 47                                                                             // Each frame has 47 bytes long
 
-struct Point {																					  // Point structure for storing collected information
+struct IndexedPoint {																			  // IndexedPoint structure for storing collected information
   int x;																						  // Using int because there will be big values
   int y;
   int distance;
-}
+};
+
+struct RawPoint {                                                                                 // RawPoint structure for storing angle and distance
+  float angle;                                                                                    // The angle will take non-integer values (180.35)
+  int distance;
+};
 
 struct __attribute__((packed)) LidarFrame{                                                        // Frame structure according to datasheet
   uint8_t header;                                                                                 // Using uint8_t because we are memory and cpu bounded
@@ -40,7 +45,8 @@ class LD06{                                                                     
     bool duty(int value);                                                                          // Setting motor speed
     std::vector<std::vector<uint8_t>> getMap(int RANGE, int MAP_SIZE);                             // Mapping the points read
     std::vector<std::vector<uint8_t>> getMap(int RANGE, int MAP_SIZE, float START_ANGLE, float END_ANGLE); // -//- in a certain angle
-  	std::vector<Point> getPoints(int RANGE, int MAP_SIZE);										   // Obtaining a vector of Points (faster and smaller than an 2d Vector)
+  	std::vector<IndexedPoint> getIndexedPoints(int RANGE, int MAP_SIZE);
+    std::vector<RawPoint> getRawPoints(int RANGE);
     // To be continued ...
 
   private:
