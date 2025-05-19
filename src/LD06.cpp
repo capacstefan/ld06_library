@@ -66,7 +66,7 @@ uint16_t LD06::L2Bendian(uint8_t lsb, uint8_t msb){
 
 int LD06::toIndex(float COORDONATE, float RANGE, int GRID_SIZE){
     int map_coordonate = (int)((COORDONATE + RANGE) * (GRID_SIZE / (RANGE*2) )); 							// Normalizing coordonate and converting to matrix index
-    return constrain(map_coordonate, 0, GRID_SIZE - 1); 													// Returnng the coordoante bounded by the matrix size
+    return ( map_coordonate > GRID_SIZE - 1) ? -1 : map_coordonate;											// The indexes that outrange the grid size are returned as -1
 }
 
 std::vector<std::vector<uint8_t>> LD06::getMap(int RANGE, int MAP_SIZE){
@@ -110,8 +110,9 @@ std::vector<std::vector<uint8_t>> LD06::getMap(int RANGE, int MAP_SIZE){
 
                      int x_map = LD06::toIndex(x, RANGE, MAP_SIZE); 									    // Conveting to 0-MAP_SIZE coordonate
                      int y_map = LD06::toIndex(y, RANGE, MAP_SIZE);
-
-                     map[y_map][x_map] = 1; 																// Building bitmap
+					 if(x_map != -1 && y_map != -1){														// Verifying the case when index is returnes as -1 because it outrange the grid
+                     	map[y_map][x_map] = 1; 																// Building bitmap
+                     }
                    }
                 }
             }
@@ -167,8 +168,9 @@ std::vector<std::vector<uint8_t>> LD06::getMap(int RANGE, int MAP_SIZE, float ST
 
                           int x_map = LD06::toIndex(x, RANGE, MAP_SIZE);
                           int y_map = LD06::toIndex(y, RANGE, MAP_SIZE);
-
-                          map[y_map][x_map] = 1;
+						  if(x_map != -1 && y_map != -1){
+	                          map[y_map][x_map] = 1;
+                          }
                       }
                     }
                 }
@@ -227,8 +229,9 @@ std::vector<IndexedPoint> LD06::getIndexedPoints(int RANGE, int MAP_SIZE){						
 
                       int x_map = LD06::toIndex(x, RANGE, MAP_SIZE);
                       int y_map = LD06::toIndex(y, RANGE, MAP_SIZE);
-
-                      points.push_back({x_map, y_map, frame.point[i].distance});							// Populating the vector with the IndexedPoint stuctures
+					  if(x_map != -1 && y_map != -1){
+                      	points.push_back({x_map, y_map, frame.point[i].distance});							// Populating the vector with the IndexedPoint stuctures
+                      }
                     }
                 }
             }
@@ -293,6 +296,10 @@ std::vector<RawPoint> LD06::getRawPoints(int RANGE){														// Method to g
     }
     return points;
 }
+
+//std::vector<IndexedPoint> LD06::dinamicallyMap(int RANGE, int MAP_SIZE, int Xpos, int Ypos){
+// return NULL;
+//}
 
 
 

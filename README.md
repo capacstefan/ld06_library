@@ -1,4 +1,5 @@
                             ------Steps for installing the library------
+    
     1. Download the zip file containing all the files
     2. Extract it
     3. Copy the directory in the libraries folder where all the Arduino libraries belong 
@@ -10,6 +11,26 @@
                                         YOU ARE READY TO GO!
     
     
+                                    -------Using Tips-------
+
+    First you have to assure that the LD06 sensor is connected correctly;
+        P5V  - 5V voltage
+        GND  - Ground
+        DATA - RX (Any serial data recieving Pin)
+        CTL  - PWM (You cand leave it unconnected because the default motor speed is well balanced already)
+    
+    Create a Searial Port for communication (ex: HardwareSerial mySerial(2); )
+    Create a lidar object (ex: LD06 lidar(mySerial, 3); 3 is the chosen RX pin)
+    
+    In void setup() you have to set up the lidar:
+        lidar.setup(); 
+
+    In void loop() you can use the following methods:
+        lidar.getMap(RANGE, GRID_SIZE);
+        lidar.getMap(RANGE, GRID_SIZE, START_ANGLE, END_ANGLE);
+        lidar.getIndedPoints(RANGE, GRID_SIZE);
+        lidar.getRawPoints(RANGE);
+
 
 
                             -------Sensor Hardware Specifications------
