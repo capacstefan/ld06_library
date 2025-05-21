@@ -56,8 +56,8 @@ class LD06{                                                                     
     std::vector<std::vector<uint8_t>> getMap(int RANGE, int MAP_SIZE, float START_ANGLE, float END_ANGLE); // Building a grid using the points read between certain degrees
   	std::vector<IndexedPoint> getIndexedPoints(int RANGE, int MAP_SIZE);						   // Returning a vector with the points read, indexed for a certain grid size (FASTER THAN WHOLE GRID METHOD)
     std::vector<RawPoint> getRawPoints(int RANGE);												   // Returning a vector with the points read, along with their raw data (angle, distance)
-    std::vector<IndexedPoint> IndexedPointsContainer();											   // Initializing a container for IndexedPoints
-    void dynamicallyMap(std::unordered_set<Point> points,int RANGE, int MAP_SIZE, int X, int Y);    // To be defined, Based on current positon, filling a vector with points scanned for a all angle view map
+//    std::vector<IndexedPoint> IndexedPointsContainer();											   // Initializing a container for IndexedPoints
+//    void dynamicallyMap(std::unordered_set<Point> points,int RANGE, int MAP_SIZE, int X, int Y); // To be defined, Based on current positon, filling a vector with points scanned for a all angle view map
     // To be continued ...
 
   private:

@@ -69,9 +69,9 @@ int LD06::toIndex(float COORDONATE, float RANGE, int GRID_SIZE){
     return ( map_coordonate > GRID_SIZE - 1) ? -1 : map_coordonate;											// The indexes that outrange the grid size are returned as -1
 }
 
-std::vector<IndexedPoint> LD06::IndexedPointsContainer(){
-	return std::vector<IndexedPoint>;
-}
+//std::vector<IndexedPoint> LD06::IndexedPointsContainer(){
+//	return points_container = std::vector<IndexedPoint>;
+//}
 
 std::vector<std::vector<uint8_t>> LD06::getMap(int RANGE, int MAP_SIZE){
     std::vector<std::vector<uint8_t>> map(MAP_SIZE, std::vector<uint8_t>(MAP_SIZE,0));					    // Initialize the matrix of points where you can dinamically set the size unlike an array
@@ -302,62 +302,62 @@ std::vector<RawPoint> LD06::getRawPoints(int RANGE){														// Method to g
 }
 
 
-void LD06::dinamicallyMap(std::unordered_set<Point> points, int RANGE, int GRID_SIZE){
-
-  	int count = 50;
-    while(serialPort->available() < FRAME_SIZE * 51)
-      delay(100);
-
-    uint8_t buffer[FRAME_SIZE * 51];
-    serialPort->readBytes(buffer, FRAME_SIZE * 51);
-
-    for(int k=0; k< FRAME_SIZE * 50; k++){
-    	if(buffer[k] == FRAME_HEADER){
-       		LidarFrame frame;
-            frame.header = buffer[k];
-            frame.data_length = buffer[k + 1];
-            frame.speed = LD06::L2Bendian(buffer[k + 2], buffer[k + 3]);
-            frame.start_angle = LD06::L2Bendian(buffer[k + 4], buffer[k + 5]);
-            for(int i=0; i < POINTS_PER_FRAME; i++){
-              frame.point[i].distance = LD06::L2Bendian(buffer[(k + 6) + i * 3], buffer[(k + 7) + i * 3]);
-              frame.point[i].confidence = buffer[(k + 8) + i * 3];
-            }
-            frame.end_angle = LD06::L2Bendian(buffer[k + 42], buffer[k + 43]);
-            frame.timestamp = LD06::L2Bendian(buffer[k + 44], buffer[k + 45]);
-            frame.checksum = buffer[k + 46];
-
-        	uint8_t calculatedCRC = LD06::CalCRC(&buffer[k],FRAME_SIZE-1);
-
-            if(calculatedCRC == frame.checksum){
-
-                float startangle = frame.start_angle / 100.0;
-                float endangle = frame.end_angle / 100.0;
-                float step = ( (endangle < startangle ? endangle + 360.0 : endangle) - startangle) / (POINTS_PER_FRAME - 1);
-
-                for(int i=0; i < POINTS_PER_FRAME; i++){
-                    if(frame.point[i].confidence > 200){
-                      float angle = startangle + step * i;
-                      float radians = angle * M_PI / 180.0;
-                      float x = frame.point[i].distance * cos(radians);
-                      float y = frame.point[i].distance * sin(radians);
-
-                      int x_map = LD06::toIndex(x, RANGE, MAP_SIZE);
-                      int y_map = LD06::toIndex(y, RANGE, MAP_SIZE);
-					  if(x_map != -1 && y_map != -1){
-                      	points.push_back({x_map, y_map});
-                    }
-                }
-            }
-
-            count--;
-            k = k + 46;
-        }
-
-        if(count == 0)
-          break;
-    }
-    return points;
-}
+//void LD06::dinamicallyMap(std::unordered_set<Point> points, int RANGE, int GRID_SIZE){
+//
+//  	int count = 50;
+//    while(serialPort->available() < FRAME_SIZE * 51)
+//      delay(100);
+//
+//    uint8_t buffer[FRAME_SIZE * 51];
+//    serialPort->readBytes(buffer, FRAME_SIZE * 51);
+//
+//    for(int k=0; k< FRAME_SIZE * 50; k++){
+//    	if(buffer[k] == FRAME_HEADER){
+//       		LidarFrame frame;
+//            frame.header = buffer[k];
+//            frame.data_length = buffer[k + 1];
+//            frame.speed = LD06::L2Bendian(buffer[k + 2], buffer[k + 3]);
+//            frame.start_angle = LD06::L2Bendian(buffer[k + 4], buffer[k + 5]);
+//            for(int i=0; i < POINTS_PER_FRAME; i++){
+//              frame.point[i].distance = LD06::L2Bendian(buffer[(k + 6) + i * 3], buffer[(k + 7) + i * 3]);
+//              frame.point[i].confidence = buffer[(k + 8) + i * 3];
+//            }
+//            frame.end_angle = LD06::L2Bendian(buffer[k + 42], buffer[k + 43]);
+//            frame.timestamp = LD06::L2Bendian(buffer[k + 44], buffer[k + 45]);
+//            frame.checksum = buffer[k + 46];
+//
+//        	uint8_t calculatedCRC = LD06::CalCRC(&buffer[k],FRAME_SIZE-1);
+//
+//            if(calculatedCRC == frame.checksum){
+//
+//                float startangle = frame.start_angle / 100.0;
+//                float endangle = frame.end_angle / 100.0;
+//                float step = ( (endangle < startangle ? endangle + 360.0 : endangle) - startangle) / (POINTS_PER_FRAME - 1);
+//
+//                for(int i=0; i < POINTS_PER_FRAME; i++){
+//                    if(frame.point[i].confidence > 200){
+//                      float angle = startangle + step * i;
+//                      float radians = angle * M_PI / 180.0;
+//                      float x = frame.point[i].distance * cos(radians);
+//                      float y = frame.point[i].distance * sin(radians);
+//
+//                      int x_map = LD06::toIndex(x, RANGE, MAP_SIZE);
+//                      int y_map = LD06::toIndex(y, RANGE, MAP_SIZE);
+//					  if(x_map != -1 && y_map != -1){
+//                      	points.push_back({x_map, y_map});
+//                    }
+//                }
+//            }
+//
+//            count--;
+//            k = k + 46;
+//        }
+//
+//        if(count == 0)
+//          break;
+//    }
+//    return points;
+//}
 
 
 
