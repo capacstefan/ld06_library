@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include <HardwareSerial.h>
 #include <vector>
+#include <unordered_set>
 
 #define POINTS_PER_FRAME 12                                                                       // Each lidar frame has 12 frames
 #define FRAME_HEADER 0x54                                                                         // Each frame's first byte is 0x54
@@ -18,6 +19,14 @@ struct IndexedPoint {																			  // IndexedPoint structure for storing 
 struct RawPoint {                                                                                 // RawPoint structure for storing angle and distance
   float angle;                                                                                    // The angle will take non-integer values (180.35)
   int distance;
+};
+
+struct Point {
+  int x;
+  int y;
+  bool operator==(const Point& other) const{
+    return x == other.x && y == other.y;
+  }
 };
 
 struct __attribute__((packed)) LidarFrame{                                                        // Frame structure according to datasheet
@@ -47,7 +56,8 @@ class LD06{                                                                     
     std::vector<std::vector<uint8_t>> getMap(int RANGE, int MAP_SIZE, float START_ANGLE, float END_ANGLE); // Building a grid using the points read between certain degrees
   	std::vector<IndexedPoint> getIndexedPoints(int RANGE, int MAP_SIZE);						   // Returning a vector with the points read, indexed for a certain grid size (FASTER THAN WHOLE GRID METHOD)
     std::vector<RawPoint> getRawPoints(int RANGE);												   // Returning a vector with the points read, along with their raw data (angle, distance)
-    //std::vector<IndexedPoint> dynamicallyMap(int RANGE, int MAP_SIZE, int Xpos, int Ypos);   	   // To be defined, Based on current positon, filling a vector with points scanned for a all angle view map
+    std::vector<IndexedPoint> IndexedPointsContainer();											   // Initializing a container for IndexedPoints
+    void dynamicallyMap(std::unordered_set<Point> points,int RANGE, int MAP_SIZE, int X, int Y);    // To be defined, Based on current positon, filling a vector with points scanned for a all angle view map
     // To be continued ...
 
   private:

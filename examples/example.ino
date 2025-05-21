@@ -25,16 +25,14 @@ void setup(){
 
 void loop(){
   //////////////////////////////////////////////
-  auto map = lidar.getMap(2000,63);
-  //Serial.println("MAPPED");
+  auto points = lidar.getPoints(2000,63);
   //////////////////////////////////////////////
 
   display.clearDisplay();
-  for(int i = 0; i < 63; i++){
-    for(int j = 0; j < 63; j ++)
-      if(map[i][j]==1){
-        display.drawPixel(j, i, SSD1306_WHITE);
-      }
+
+  for(int i = 0; i < points.size(); i++){
+    display.drawPixel(points[i].x, points[i].y, SSD1306_WHITE);
   }
+
   display.display();
 }
