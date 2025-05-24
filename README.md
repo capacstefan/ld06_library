@@ -1,4 +1,4 @@
-                            ------Steps for installing the library------
+                        ------HOW TO ADD THE LIBRARY TO PROJECT------
     
     1. Download the zip file containing all the files
     2. Extract it
@@ -11,7 +11,7 @@
                                         YOU ARE READY TO GO!
     
     
-                                    -------Using Tips-------
+                                    -------HOW TO USE-------
 
     First you have to assure that the LD06 sensor is connected correctly;
         P5V  - 5V voltage
@@ -26,10 +26,14 @@
         lidar.setup(); 
 
     In void loop() you can use the following methods:
-        lidar.getMap(RANGE, GRID_SIZE);
-        lidar.getMap(RANGE, GRID_SIZE, START_ANGLE, END_ANGLE);
-        lidar.getIndedPoints(RANGE, GRID_SIZE);
-        lidar.getRawPoints(RANGE);
+        auto map = lidar.getMap(RANGE, GRID_SIZE);
+        auto map = lidar.getMap(RANGE, GRID_SIZE, START_ANGLE, END_ANGLE);
+        auto points = lidar.getIndedPoints(RANGE, GRID_SIZE);
+        auto points = lidar.getRawPoints(RANGE);
+
+    You can also adjust the spinining speed of the lidar by using bool duty = lidar.duty(VALUE)
+    where you can specify a value between 0-256
+    
 
 
 
