@@ -66,7 +66,11 @@ uint16_t LD06::L2Bendian(uint8_t lsb, uint8_t msb){
 
 int LD06::toIndex(float COORDONATE, float RANGE, int GRID_SIZE){
     int map_coordonate = (int)((COORDONATE + RANGE) * (GRID_SIZE / (RANGE*2) )); 							// Normalizing coordonate and converting to matrix index
-    return ( map_coordonate > GRID_SIZE - 1) ? -1 : map_coordonate;											// The indexes that outrange the grid size are returned as -1
+
+    if(map_coordonate > GRID_SIZE || map_coordonate < 0){                // The indexes that outrange the grid size are returned as -1
+      return -1;
+    }
+    return map_coordonate;
 }
 
 //std::vector<IndexedPoint> LD06::IndexedPointsContainer(){
