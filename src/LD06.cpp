@@ -254,6 +254,7 @@ std::vector<IndexedPoint> LD06::getIndexedPoints(int RANGE, int MAP_SIZE){						
     return points;
 }
 
+
 std::vector<RawPoint> LD06::getRawPoints(int RANGE){														// Method to get basic data for Points such as angle(degrees) and distance(mm)
   	int count = 50;
     while(serialPort->available() < FRAME_SIZE * 51)
