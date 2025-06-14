@@ -79,14 +79,14 @@ int LD06::toIndex(float COORDONATE, float RANGE, int GRID_SIZE){
 
 std::vector<std::vector<uint8_t>> LD06::getMap(int RANGE, int MAP_SIZE){
     std::vector<std::vector<uint8_t>> map(MAP_SIZE, std::vector<uint8_t>(MAP_SIZE,0));					    // Initialize the matrix of points where you can dinamically set the size unlike an array
-    int count = 50; 																						// Number of frames to be analyzed
-    while(serialPort->available() < FRAME_SIZE * 51) 														// The wanted byte is the HEADER byte which cand be anywhere from first to 47th byte read
-      delay(100);                                   														// and after that we are getting frame after frame (47 bytes)(47 bytes)...
+    int count = 40; 																						// Number of frames to be analyzed
+    while(serialPort->available() < FRAME_SIZE * 41) 														// The wanted byte is the HEADER byte which cand be anywhere from first to 47th byte read
+      delay(50);                                   														// and after that we are getting frame after frame (47 bytes)(47 bytes)...
 
-    uint8_t buffer[FRAME_SIZE * 51];																		// Settng a buffer for the frames form serial buffer (reading them one by one will slow the procces)
-    serialPort->readBytes(buffer, FRAME_SIZE * 51);
+    uint8_t buffer[FRAME_SIZE * 41];																		// Settng a buffer for the frames form serial buffer (reading them one by one will slow the procces)
+    serialPort->readBytes(buffer, FRAME_SIZE * 41);
 
-    for(int k=0; k< FRAME_SIZE * 50; k++){
+    for(int k=0; k< FRAME_SIZE * 40; k++){
     	if(buffer[k] == FRAME_HEADER){ 																		// Verifying the header for each frame otherwise something can happen (data loss) and the reading procces will be desycronized
        		LidarFrame frame; 																				// Breaking the frame into pieces
             frame.header = buffer[k];
@@ -136,14 +136,14 @@ std::vector<std::vector<uint8_t>> LD06::getMap(int RANGE, int MAP_SIZE){
 
 std::vector<std::vector<uint8_t>> LD06::getMap(int RANGE, int MAP_SIZE, float START_ANGLE, float END_ANGLE){// Overloading getMap function, adding angle focusing
     std::vector<std::vector<uint8_t>> map(MAP_SIZE, std::vector<uint8_t>(MAP_SIZE,0));
-    int count = 50;
-    while(serialPort->available() < FRAME_SIZE * 51)
-      delay(100);
+    int count = 40;
+    while(serialPort->available() < FRAME_SIZE * 41)
+      delay(50);
 
-    uint8_t buffer[FRAME_SIZE * 51];
-    serialPort->readBytes(buffer, FRAME_SIZE * 51);
+    uint8_t buffer[FRAME_SIZE * 41];
+    serialPort->readBytes(buffer, FRAME_SIZE * 41);
 
-    for(int k=0; k< FRAME_SIZE * 50; k++){
+    for(int k=0; k< FRAME_SIZE * 40; k++){
     	if(buffer[k] == FRAME_HEADER){
        		LidarFrame frame;
             frame.header = buffer[k];
@@ -196,16 +196,16 @@ std::vector<std::vector<uint8_t>> LD06::getMap(int RANGE, int MAP_SIZE, float ST
 
 std::vector<IndexedPoint> LD06::getIndexedPoints(int RANGE, int MAP_SIZE){									// Method to get Points along with their coordonates for a choosen grid size
   																											// along with their distance(mm)
-  	int count = 50;
-    while(serialPort->available() < FRAME_SIZE * 51)
+  	int count = 40;
+    while(serialPort->available() < FRAME_SIZE * 41)
       delay(50);
 
     std::vector<IndexedPoint> points;
 
-    uint8_t buffer[FRAME_SIZE * 51];
-    serialPort->readBytes(buffer, FRAME_SIZE * 51);
+    uint8_t buffer[FRAME_SIZE * 41];
+    serialPort->readBytes(buffer, FRAME_SIZE * 41);
 
-    for(int k=0; k< FRAME_SIZE * 50; k++){
+    for(int k=0; k< FRAME_SIZE * 40; k++){
     	if(buffer[k] == FRAME_HEADER){
        		LidarFrame frame;
             frame.header = buffer[k];
@@ -258,7 +258,7 @@ std::vector<IndexedPoint> LD06::getIndexedPointsLite(int RANGE, int MAP_SIZE){		
   																											// along with their distance(mm)
   	int count = 30;
     while(serialPort->available() < FRAME_SIZE * 31)
-      delay(50);
+      delay(30);
 
     std::vector<IndexedPoint> points;
 
@@ -316,16 +316,16 @@ std::vector<IndexedPoint> LD06::getIndexedPointsLite(int RANGE, int MAP_SIZE){		
 
 
 std::vector<RawPoint> LD06::getRawPoints(int RANGE){														// Method to get basic data for Points such as angle(degrees) and distance(mm)
-  	int count = 50;
-    while(serialPort->available() < FRAME_SIZE * 51)
+  	int count = 40;
+    while(serialPort->available() < FRAME_SIZE * 41)
       delay(50);
 
     std::vector<RawPoint> points;
 
-    uint8_t buffer[FRAME_SIZE * 51];
-    serialPort->readBytes(buffer, FRAME_SIZE * 51);
+    uint8_t buffer[FRAME_SIZE * 41];
+    serialPort->readBytes(buffer, FRAME_SIZE * 41);
 
-    for(int k=0; k< FRAME_SIZE * 50; k++){
+    for(int k=0; k< FRAME_SIZE * 40; k++){
     	if(buffer[k] == FRAME_HEADER){
        		LidarFrame frame;
             frame.header = buffer[k];
