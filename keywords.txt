@@ -1,0 +1,8 @@
+LD06 KEYWORD1
+setup KEYWORD2
+duty KEYWORD2
+getMap KEYWORD2
+getIndedPoints KEYWORD2
+getIndedPointsLite KEYWORD2
+getRawPoints KEYWORD2
+getRawPointsLite KEYWORD2

@@ -26,13 +26,17 @@
         lidar.setup(); 
 
     In void loop() you can use the following methods:
-        auto map = lidar.getMap(RANGE, GRID_SIZE);
-        auto map = lidar.getMap(RANGE, GRID_SIZE, START_ANGLE, END_ANGLE);
-        auto points = lidar.getIndedPoints(RANGE, GRID_SIZE);
-        auto points = lidar.getRawPoints(RANGE);
+        auto map = lidar.getMap(int RANGE, int GRID_SIZE);
+        auto map = lidar.getMap(int RANGE, int GRID_SIZE, float START_ANGLE, float END_ANGLE);
+        auto points = lidar.getIndexedPoints(int RANGE, int GRID_SIZE);
+        auto points = lidar.getIndexedPointsLite(int RANGE, int GRID_SIZE);
+        auto points = lidar.getRawPoints(int RANGE);
+        auto points = lidar.getRawPointsLite(int RANGE);
 
     You can also adjust the spinining speed of the lidar by using bool duty = lidar.duty(VALUE)
     where you can specify a value between 0-256
+
+    "auto" will automatically deduce the type of vector you need for the points to be stored, you will be able to iterate through it.
     
 
 
